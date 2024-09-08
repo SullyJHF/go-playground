@@ -2,15 +2,24 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="/css/reset.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sully's Server</title>
+
+    <script src="https://unpkg.com/htmx.org@2.0.2"
+        integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
+
+    <link rel="stylesheet" href="/css/reset.css">
 </head>
 
 <body>
     <h1>Welcome to Sully's Server</h1>
     <div>This is a test</div>
+    <div hx-ext="ws" ws-connect="ws://localhost:8080/ws">
+        <div>Loading data...</div>
+    </div>
 </body>
 
 </html>
