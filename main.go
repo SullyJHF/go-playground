@@ -80,11 +80,28 @@ func (s *server) subscribe(ctx context.Context, writer http.ResponseWriter, req 
 	}
 }
 
+func (s *server) broadcast(msg []byte) {
+	s.subscribersMutex.Lock()
+	for subscriber := range s.subscribers {
+		subscriber.msgs <- msg
+	}
+	s.subscribersMutex.Unlock()
+}
+
 func main() {
 	fmt.Println("Hello, World!")
 
-	server := NewServer()
-	err := http.ListenAndServe(":8080", &server.mux)
+	srv := NewServer()
+
+	go func(s *server) {
+		for {
+			timestamp := time.Now().Format(time.RFC850)
+			s.broadcast([]byte(timestamp))
+			time.Sleep(1 * time.Second)
+		}
+	}(srv)
+
+	err := http.ListenAndServe(":8080", &srv.mux)
 	if err != nil {
 		log.Fatal(err)
 	}
