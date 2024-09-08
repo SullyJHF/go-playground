@@ -8,9 +8,9 @@ import (
 
 func main() {
 	fmt.Println("Hello, World!")
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Helloo, you've requested %s\n", r.URL.Path)
-	})
+	fs := http.FileServer(http.Dir("static/css"))
+	http.Handle("/", http.FileServer(http.Dir("htmx/")))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
