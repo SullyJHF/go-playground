@@ -96,7 +96,8 @@ func main() {
 	go func(s *server) {
 		for {
 			timestamp := time.Now().Format(time.RFC850)
-			s.broadcast([]byte(timestamp))
+			html := `<div hx-swap-oob="innerHTML:#update-timestamp">` + timestamp + `</div>`
+			s.broadcast([]byte(html))
 			time.Sleep(1 * time.Second)
 		}
 	}(srv)
